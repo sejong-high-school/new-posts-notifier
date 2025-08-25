@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Sender</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f4f9;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      margin: 8px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    input {
+      width: 300px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Send SMS</h1>
+  <input type="text" id="message" placeholder="Type your message here">
+  <button onclick="sendSMS()">Send</button>
+
+  <script>
+    async function sendSMS() {
+      const message = document.getElementById('message').value;
+
+      if (!message) {
+        alert("Please enter a message");
+        return;
+      }
+           // Traccar SMS Gateway 앱 포트
+      const TOKEN = "82c41d86-2f03-4d2e-9c31-baa2591a5be8"; // 앱에서 설정한 토큰
+      const TO_NUMBER = "01099106469";  // 보낼 번호
+
+      const url = `https://sejong.serveo.net/send`;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${TOKEN}`
+          },
+          body: JSON.stringify({
+            to: TO_NUMBER,
+            message: message
+          })
+        });
+
+        if (response.ok) {
+          alert("Message sent successfully!");
+        } else {
+          alert("Failed to send message. Check your settings.");
+        }
+      } catch (error) {
+        alert("Error: " + error);
+      }
+    }
+  </script>
+</body>
+</html>
